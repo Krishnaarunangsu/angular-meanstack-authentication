@@ -10,7 +10,8 @@ import { Router } from '@angular/router';
 })
 
 export class AuthService {
-  endpoint: string = 'http://localhost:4000/api';
+  //endpoint: string = 'http://localhost:4000/api';
+  endpoint: string = 'https://stgdash.xpresso.ai/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
 
@@ -31,13 +32,15 @@ export class AuthService {
 
   // Sign-in
   signIn(user: User) {
-    return this.http.post<any>(`${this.endpoint}/signin`, user)
+    console.log('User', user);
+    return this.http.post<any>(`${this.endpoint}/auth`, user)
       .subscribe((res: any) => {
-        localStorage.setItem('access_token', res.token)
-        this.getUserProfile(res._id).subscribe((res) => {
+        console.log('Access Token:',res.results.access_token);
+        localStorage.setItem('access_token', res.results.access_token);
+        /* this.getUserProfile(res._id).subscribe((res) => {
           this.currentUser = res;
           this.router.navigate(['user-profile/' + res.msg._id]);
-        })
+        }) */
       })
   }
 
